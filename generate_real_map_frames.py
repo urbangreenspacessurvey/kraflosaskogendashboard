@@ -3,7 +3,7 @@ import json, math, os, re
 
 ROOT='/mnt/data/kraflosaskogen_story'
 ATLAS=f'{ROOT}/assets/atlas'
-base_path=f'{ATLAS}/kalmar-real-map.png'
+base_path=f'{ATLAS}/osm-base.png'
 raw=open(f'{ROOT}/data/site-data.js',encoding='utf-8').read()
 D=json.loads(raw.split('=',1)[1].strip().rstrip(';'))
 pins=[p for p in D['pins'] if p.get('core')]
@@ -11,22 +11,12 @@ pins=[p for p in D['pins'] if p.get('core')]
 W,H=1600,1000
 MAP_H=1000
 base=Image.open(base_path).convert('RGB')
-# Convert the municipal planning map into a subdued editorial street-map base.
-base=ImageEnhance.Color(base).enhance(0.14)
-base=ImageEnhance.Brightness(base).enhance(1.08)
-base=ImageEnhance.Contrast(base).enhance(0.91)
-base=Image.blend(base, Image.new('RGB', base.size, (255,255,255)), 0.24)
+# Prepare the user-provided open street map screenshot into a slightly softened editorial base.
+base=ImageEnhance.Color(base).enhance(0.92)
+base=ImageEnhance.Brightness(base).enhance(1.04)
+base=ImageEnhance.Contrast(base).enhance(0.97)
+base=Image.blend(base, Image.new('RGB', base.size, (255,255,255)), 0.08)
 
-# Suppress the planning legend and large planning labels while retaining geography.
-# Coordinates refer to the 750x652 source image.
-d=ImageDraw.Draw(base,'RGBA')
-# top-right legend veil
-d.rounded_rectangle((525,48,748,260), radius=12, fill=(252,252,249,248))
-# large planning text boxes/labels
-for box in [(18,216,139,282),(60,345,177,402),(194,321,318,355),(370,203,436,233),(378,410,468,456),(372,335,522,373),(220,126,320,174)]:
-    d.rounded_rectangle(box, radius=5, fill=(249,249,246,226))
-
-# Add clean place labels in approximate positions.
 font_sans='/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'
 font_bold='/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'
 font_serif='/usr/share/fonts/truetype/dejavu/DejaVuSerif.ttf'
@@ -36,19 +26,18 @@ try:
     f_forest=ImageFont.truetype(font_serif,22)
 except:
     f_small=f_label=f_forest=None
-# labels on source map
-for xy,label in [((248,137),'SNURROM'),((180,540),'VIMPELTORPET'),((532,475),'NORRLIDEN')]:
-    d.text(xy,label,font=f_label,fill=(72,86,78,220))
-d.text((318,310),'Krafslösaskogen',font=f_forest,fill=(31,67,53,235))
 
+# Subtle veil behind lower caption for legibility on the detailed basemap.
+# No heavy editing: keep the real open map recognizable.
 # resize preserving aspect ratio and shift right so story cards do not cover the map core
 map_w=round(MAP_H*base.width/base.height)
 base_big=base.resize((map_w,MAP_H),Image.Resampling.LANCZOS)
 XOFF=W-map_w-18
 YOFF=0
 
-# approximate georeferencing verified against the municipal overview
-BBOX=dict(minLat=56.680,maxLat=56.735,minLng=16.295,maxLng=16.382)
+# approximate georeferencing for the provided open-street-map screenshot
+# calibrated so the survey point cloud aligns to the Krafslösaskogen / Snurrom area
+BBOX=dict(minLat=56.668,maxLat=56.756,minLng=16.258,maxLng=16.418)
 def project(p):
     x=(p['lng']-BBOX['minLng'])/(BBOX['maxLng']-BBOX['minLng'])*base.width
     y=(BBOX['maxLat']-p['lat'])/(BBOX['maxLat']-BBOX['minLat'])*base.height
@@ -83,14 +72,14 @@ def canvas():
     bg=Image.new('RGB',(W,H),(22,48,38))
     # subtle tonal panel behind story text
     draw=ImageDraw.Draw(bg)
-    draw.rectangle((0,0,XOFF+85,H), fill=(19,45,35))
     bg.paste(base_big,(XOFF,YOFF))
-    # left-side fade for text readability
     shade=Image.new('RGBA',(W,H),(0,0,0,0))
     sd=ImageDraw.Draw(shade)
-    for x in range(0,620):
-        a=int(155*(1-x/620))
+    for x in range(0,540):
+        a=int(150*(1-x/540))
         sd.line((x,0,x,H),fill=(8,28,21,max(0,a)))
+    # light veil across the map for a more editorial look
+    sd.rectangle((XOFF,0,W,H), fill=(255,255,255,18))
     bg=Image.alpha_composite(bg.convert('RGBA'),shade)
     return bg
 
@@ -99,7 +88,7 @@ def footer(img,title,subtitle):
     dr.rounded_rectangle((XOFF+18,H-88,W-24,H-18),radius=12,fill=(255,255,255,224))
     dr.text((XOFF+38,H-69),title,font=ImageFont.truetype(font_bold,18),fill=(28,50,41,245))
     dr.text((XOFF+38,H-42),subtitle,font=ImageFont.truetype(font_sans,11),fill=(82,95,88,245))
-    dr.text((W-380,H-42),'Base map adapted from Kalmar Municipality · survey overlay',font=ImageFont.truetype(font_sans,10),fill=(95,104,99,235))
+    dr.text((W-430,H-42),'Base map from user-provided open map screenshot · survey overlay',font=ImageFont.truetype(font_sans,10),fill=(95,104,99,235))
 
 def save(name,img,title,subtitle):
     footer(img,title,subtitle)
@@ -136,7 +125,7 @@ def score_layer(img,getcolor,radius=6.2):
 
 # 1 overview
 im=canvas()
-save('street-1-overview',im,'Forest overview','Real municipal base map, cleaned for the survey story.')
+save('street-1-overview',im,'Forest overview','Open street-map base with the survey-story framing.')
 
 # 2 points
 im=canvas(); dots_layer(im)
