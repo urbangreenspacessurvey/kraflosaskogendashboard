@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="A scrollytelling exploration of the Krafslösaskogen / Snurrom survey in Kalmar, Sweden." />
+  <title>Krafslösaskogen — a forest in everyday life</title>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIINfQ3yn5pY+Wg3hw6A5rH1K3h9+v+9m0A=" crossorigin="" />
+  <link rel="stylesheet" href="assets/styles.css" />
+</head>
+<body>
+  <div class="progress"><span id="progressBar"></span></div>
+  <header class="topbar">
+    <a class="brand" href="#top">KRAFSLÖSASKOGEN</a>
+    <nav>
+      <a href="#story">Story</a>
+      <a href="#map-story">Map</a>
+      <a href="#model">Model</a>
+      <a href="#method">Method</a>
+    </nav>
+    <a class="survey-link" href="https://kraflosaskogensurvey.onrender.com" target="_blank" rel="noopener">Original survey ↗</a>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-noise"></div>
+      <div class="hero-orbit orbit-a"></div><div class="hero-orbit orbit-b"></div>
+      <div class="hero-content reveal">
+        <p class="eyebrow">Krafslösaskogen / Snurrom survey · Kalmar, Sweden</p>
+        <h1>A forest in<br><em>everyday life.</em></h1>
+        <p class="dek">A scroll-driven exploration of how people use Krafslösaskogen, what they feel there, and how attachment, visitation and perceptions of more-than-human life move together.</p>
+        <div class="hero-kpis" id="heroKpis"></div>
+        <a class="scroll-cue" href="#story"><span>Scroll to enter the story</span><b>↓</b></a>
+      </div>
+      <div class="hero-foot">Survey snapshot · <span id="snapshotDates"></span></div>
+    </section>
+
+    <section id="story" class="chapter intro-grid">
+      <div class="chapter-copy reveal">
+        <p class="eyebrow">01 · The setting</p>
+        <h2>Nature and city are meeting in the same landscape.</h2>
+        <p>Kalmar’s planning documents describe Snurrom as a place where <strong>nature, city, outdoor life and everyday life meet</strong>. Krafslösaskogen is also described by the municipality as a forest area used for recreation.</p>
+        <p>This survey adds another layer: not what the landscape is planned to become, but how people already experience it.</p>
+        <div class="source-chips">
+          <a href="https://kalmar.se/bygga-bo-och-miljo/samhallsutveckling/planering/oversiktlig-planering/planprogram/snurrom.html" target="_blank" rel="noopener">Kalmar plan programme ↗</a>
+          <a href="https://kalmar.se/bygga-bo-och-miljo/samhallsutveckling/pagaende-detaljplanearbete-och-projekt/norra-staden/friluftsstaden/friluftsliv-och-historia.html" target="_blank" rel="noopener">Outdoor life & history ↗</a>
+        </div>
+      </div>
+      <aside class="pullquote reveal">
+        <span>“</span>
+        <p>How much of a place lives in the map — and how much lives in the people who return to it?</p>
+      </aside>
+    </section>
+
+    <section class="chapter dark chapter-stats">
+      <div class="section-head reveal">
+        <p class="eyebrow">02 · What respondents told us</p>
+        <h2>The forest scores highest where life feels closest.</h2>
+        <p>Across the 1–7 survey scales, everyday well-being and nature bonding are especially strong. The cards below are respondent-level scale means.</p>
+      </div>
+      <div class="metric-grid" id="scaleCards"></div>
+      <div class="chart-card reveal">
+        <div class="chart-title"><div><span class="mini">Daily life & well-being</span><h3>Almost every well-being item sits above 5.4 / 7</h3></div><span class="legend-note">Mean agreement</span></div>
+        <div id="wellbeingChart" class="bars"></div>
+      </div>
+    </section>
+
+    <section class="chapter use-section">
+      <div class="section-head reveal">
+        <p class="eyebrow">03 · What is the forest for?</p>
+        <h2>Walking is the anchor. Everyday recreation follows close behind.</h2>
+        <p>Respondents rated a wide set of possible uses. The pattern is broad, but movement and everyday access stand out more than occasional activities.</p>
+      </div>
+      <div class="split-chart">
+        <div id="functionChart" class="bars bars-light reveal"></div>
+        <div class="annotation-card reveal">
+          <div class="big-number" id="walkingScore">6.5</div>
+          <p>Walking / jogging / running has the highest average perceived-use score.</p>
+          <div class="rule"></div>
+          <p class="small">Picnicking ranks lowest among the listed functions — still above the midpoint.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="photo-break">
+      <div class="photo-break-copy reveal">
+        <p class="eyebrow">04 · Entering the forest</p>
+        <h2>Before the numbers, there is a place.</h2>
+        <p>The survey is not only about opinions. It is about a lived landscape: paths, light, undergrowth, dog walks, berry picking, calmness, routine and return. The visual story now leans into that atmosphere more clearly.</p>
+      </div>
+    </section>
+
+    <section id="map-story" class="map-scrolly">
+      <div class="map-sticky">
+        <div id="storyMap" aria-label="Interactive map of survey points"></div>
+        <div class="map-shade"></div>
+        <div class="map-header">
+          <div><span class="mini">Spatial story</span><strong id="mapModeTitle">The full survey geography</strong></div>
+          <div class="map-counter"><b id="visiblePointCount">0</b><span>points shown</span></div>
+        </div>
+        <div class="map-legend" id="mapLegend"></div>
+      </div>
+      <div class="map-steps">
+        <article class="map-step active" data-mode="all">
+          <span class="step-no">04.1</span>
+          <h3>Start with the full geography of the survey.</h3>
+          <p><strong id="allPinText">550</strong> valid mapped points are shown on the full map — including the small number placed outside the immediate forest area. This keeps the spatial story intact instead of cropping the view.</p>
+        </article>
+        <article class="map-step" data-mode="emotion">
+          <span class="step-no">04.2</span>
+          <h3>Heat the map by emotion.</h3>
+          <p>The coloured hotspot layer shows <em>what people felt</em> at each location. Joy dominates, while calmness forms a smaller but clearly visible second pattern.</p>
+        </article>
+        <article class="map-step" data-mode="activity">
+          <span class="step-no">04.3</span>
+          <h3>Heat the map by what people do there.</h3>
+          <p>Free-text activities were grouped into broad themes such as walking, dog walking, foraging, play and quiet nature time. The layer shows how everyday use shapes the forest map.</p>
+        </article>
+        <article class="map-step" data-mode="heat">
+          <span class="step-no">04.4</span>
+          <h3>Density reveals repeated attention.</h3>
+          <p>When categories are stripped away, the heatmap shows where mapped experiences accumulate most intensely.</p>
+        </article>
+        <article class="map-step" data-mode="wellbeing">
+          <span class="step-no">04.5</span>
+          <h3>The same places can be linked back to well-being.</h3>
+          <p>Mapped places are not independent observations — some people placed many points — so this layer is descriptive, not a spatial significance test. It lets the survey and map speak to the survey scales without pretending each pin is a new respondent.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="chapter contrast-section">
+      <div class="section-head reveal">
+        <p class="eyebrow">05 · The central tension</p>
+        <h2>People value coexistence much more than they trust its recognition in governance.</h2>
+      </div>
+      <div class="contrast-wrap reveal">
+        <div class="contrast-scale">
+          <div class="contrast-row">
+            <div class="contrast-label"><b>Coexistence & equal value</b><span>Items 1–7</span></div>
+            <div class="contrast-track"><i id="coexistBar"></i></div><strong id="coexistMean"></strong>
+          </div>
+          <div class="contrast-row">
+            <div class="contrast-label"><b>Governance recognition</b><span>Items 8–11</span></div>
+            <div class="contrast-track"><i id="govBar"></i></div><strong id="govMean"></strong>
+          </div>
+        </div>
+        <div class="contrast-copy">
+          <p>The first seven multispecies items describe coexistence, equal value, protection and accessibility. Their mean is high.</p>
+          <p>The final four ask whether city decision-making and governance recognize species and their rights. Their mean drops sharply below the scale midpoint.</p>
+          <p class="method-note">Both subscales are internally consistent in this sample (Cronbach’s α shown in the methodology).</p>
+        </div>
+      </div>
+      <div id="multiItems" class="bars bars-light reveal"></div>
+    </section>
+
+    <section id="model" class="chapter model-section dark">
+      <div class="section-head reveal">
+        <p class="eyebrow">06 · Connecting the variables</p>
+        <h2>Attachment is the strongest statistical companion of well-being.</h2>
+        <p>An exploratory respondent-level regression predicts the well-being composite from nature bonding, visit frequency, forest functionality, coexistence orientation, governance recognition, distance and age. Predictors and outcome are standardized; robust HC3 standard errors are used.</p>
+      </div>
+      <div class="model-layout reveal">
+        <div class="model-diagram" id="modelDiagram"></div>
+        <div class="model-summary">
+          <span class="mini">Exploratory model</span>
+          <div class="r2"><b id="r2Value"></b><span>R²</span></div>
+          <p>About four-fifths of the variation in the well-being composite is associated with the included predictors in this sample.</p>
+          <p class="small">This is cross-sectional survey data. Coefficients describe association, not causal effects. Likert composites are treated as approximately continuous.</p>
+        </div>
+      </div>
+      <div id="coefChart" class="coef-chart reveal"></div>
+    </section>
+
+    <section class="chapter demographics-section">
+      <div class="section-head reveal">
+        <p class="eyebrow">07 · Who answered?</p>
+        <h2>The sample is local and frequent-use heavy.</h2>
+        <p>That makes it especially useful for understanding established relationships with the forest — but it should not be read as a representative poll of all Kalmar residents.</p>
+      </div>
+      <div class="demo-grid">
+        <div class="chart-card reveal"><div class="chart-title"><h3>Distance from forest</h3></div><div id="distanceChart" class="bars bars-light compact"></div></div>
+        <div class="chart-card reveal"><div class="chart-title"><h3>Visit frequency</h3></div><div id="visitChart" class="bars bars-light compact"></div></div>
+        <div class="chart-card reveal"><div class="chart-title"><h3>Age groups</h3></div><div id="ageChart" class="bars bars-light compact"></div></div>
+      </div>
+    </section>
+
+    <section class="explorer-section">
+      <div class="explorer-inner reveal">
+        <p class="eyebrow">08 · Explore the map yourself</p>
+        <h2>Switch between full-map hotspots and survey-linked layers.</h2>
+        <p>The map above remains interactive: pan, zoom, switch basemaps, and click points for saved activity, emotion and notes. The default framing now stays focused on the forest area for readability, while the full survey extent remains one click away.</p>
+        <div class="explorer-controls">
+          <button data-explore-mode="all">Full geography</button>
+          <button data-explore-mode="emotion">Emotions</button>
+          <button data-explore-mode="activity">Activities</button>
+          <button data-explore-mode="heat">Density</button>
+          <button data-explore-mode="bond">Nature bonding</button>
+          <button data-explore-mode="wellbeing">Well-being</button>
+          <button data-explore-mode="governance">Governance recognition</button>
+          <button id="fitAllBtn">Fit full survey extent</button>
+          <button id="fitCoreBtn">Zoom to forest core</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="method" class="chapter method-section">
+      <div class="section-head reveal">
+        <p class="eyebrow">09 · Method & transparency</p>
+        <h2>What is included — and what is not.</h2>
+      </div>
+      <div class="method-grid">
+        <div class="method-card reveal"><b>Respondent unit</b><p>Descriptive statistics and regression use one row per respondent. Repeated map pins are never counted as separate people.</p></div>
+        <div class="method-card reveal"><b>Quality control</b><p>Two submissions with explicit “test” map text are excluded from analysis. Four substantive pins with impossible coordinates are excluded from the map, but their respondent surveys remain in respondent-level analysis.</p></div>
+        <div class="method-card reveal"><b>Scale construction</b><p>Item means form composite scores. Internal consistency is strong: bonding α <span id="alphaBond"></span>, functionality α <span id="alphaFunction"></span>, well-being α <span id="alphaWell"></span>, coexistence α <span id="alphaCoexist"></span>, governance α <span id="alphaGov"></span>.</p></div>
+        <div class="method-card reveal"><b>Interpretation</b><p>The sample is self-selected, the design is cross-sectional, and many responses come from frequent local users. Results describe this sample and should not be generalized without a sampling frame.</p></div>
+      </div>
+      <details class="data-notes reveal"><summary>Technical model details</summary><p>The model is OLS with heteroscedasticity-consistent HC3 standard errors. Outcome: standardized mean of routine_1–routine_9. Predictors: standardized nature-bonding mean, harmonized ordinal visit frequency, functionality mean, multispecies coexistence mean (multi_1–multi_7), governance-recognition mean (multi_8–multi_11), residential-distance ordinal code, and age-band ordinal code. N = <span id="modelN"></span>.</p></details>
+      <div class="sources reveal">
+        <h3>Sources</h3>
+        <a href="https://kraflosaskogensurvey.onrender.com" target="_blank" rel="noopener">Original Krafslösaskogen / Snurrom survey</a>
+        <a href="https://kalmar.se/bygga-bo-och-miljo/samhallsutveckling/planering/oversiktlig-planering/planprogram/snurrom.html" target="_blank" rel="noopener">Kalmar Municipality — Plan programme for Snurrom</a>
+        <a href="https://kalmar.se/bygga-bo-och-miljo/samhallsutveckling/pagaende-detaljplanearbete-och-projekt/norra-staden/friluftsstaden/friluftsliv-och-historia.html" target="_blank" rel="noopener">Kalmar Municipality — Outdoor life and history</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div><b>Krafslösaskogen survey story</b><span>Static scrollytelling prototype</span></div>
+    <div>Built from the provided survey workbook · No server-side code required.</div>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+  <script src="data/site-data.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>
