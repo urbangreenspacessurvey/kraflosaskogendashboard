@@ -50,41 +50,6 @@
   renderBars('#functionChart', [...D.items.function].sort((a,b)=>b.mean-a.mean), 7);
   $('#walkingScore').textContent = fmt(Math.max(...D.items.function.map(x=>x.mean)));
 
-  // Atlas scrollytelling
-  const frameMeta = {
-    overview:{title:'Forest overview',count:'527'},
-    'all-points':{title:'All mapped experiences',count:'527'},
-    emotions:{title:'Emotion hotspots',count:'527'},
-    activities:{title:'Activity hotspots',count:'527'},
-    density:{title:'Density heat',count:'527'},
-    wellbeing:{title:'Well-being layer',count:'527'},
-    governance:{title:'Governance recognition',count:'527'}
-  };
-  function setFrame(name){
-    $$('.atlas-frame').forEach(el=>el.classList.toggle('active', el.dataset.frame===name));
-    $$('.atlas-step').forEach(el=>el.classList.toggle('active', el.dataset.frame===name));
-    $('#atlasModeTitle').textContent = frameMeta[name]?.title || 'Forest overview';
-    $('#atlasCounter').textContent = frameMeta[name]?.count || '527';
-  }
-  setFrame('overview');
-  const atlasObs = new IntersectionObserver(entries => {
-    entries.filter(e=>e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio).forEach(e => setFrame(e.target.dataset.frame));
-  }, {rootMargin:'-34% 0px -44% 0px', threshold:[0,.25,.55]});
-  $$('.atlas-step').forEach(el=>atlasObs.observe(el));
-
-  // Atlas gallery
-  const galleryItems = [
-    ['street-1-overview.png','Forest overview'],
-    ['street-2-all-points.png','All mapped experiences'],
-    ['street-3-emotions.png','Emotion hotspots'],
-    ['street-4-activities.png','Activity hotspots'],
-    ['street-5-density.png','Density heat'],
-    ['street-6-wellbeing.png','Well-being layer'],
-    ['street-7-governance.png','Governance recognition']
-  ];
-  $('#atlasGallery').innerHTML = galleryItems.map(([file,title],i)=>`<figure class="atlas-thumb reveal"><img src="assets/atlas/${file}" alt="${esc(title)}" loading="lazy"/><figcaption><span>${String(i+1).padStart(2,'0')}</span><b>${esc(title)}</b></figcaption></figure>`).join('');
-  $$('#atlasGallery .reveal').forEach(el=>revealObs.observe(el));
-
   // Multispecies contrast
   $('#coexistMean').textContent=fmt(D.contrast.coexistMean);
   $('#govMean').textContent=fmt(D.contrast.governanceMean);

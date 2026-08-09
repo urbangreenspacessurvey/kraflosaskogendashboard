@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="A scrollytelling exploration of the Krafslösaskogen / Snurrom survey in Kalmar, Sweden." />
   <title>Krafslösaskogen — a forest in everyday life</title>
-    <link rel="stylesheet" href="assets/styles.css" />
+    <link rel="stylesheet" href="https://js.arcgis.com/4.33/esri/themes/light/main.css" />
+  <link rel="stylesheet" href="assets/styles.css" />
 </head>
 <body>
   <div class="progress"><span id="progressBar"></span></div>
@@ -89,58 +90,53 @@
       </div>
     </section>
 
-    <section id="map-story" class="atlas-scrolly">
-      <div class="atlas-sticky">
-        <div class="atlas-stage" aria-label="Scroll-sequenced survey atlas">
-          <img class="atlas-frame active" data-frame="overview" src="assets/atlas/street-1-overview.png" alt="Real street-map overview frame" />
-          <img class="atlas-frame" data-frame="all-points" src="assets/atlas/street-2-all-points.png" alt="Real street-map frame with mapped experiences" />
-          <img class="atlas-frame" data-frame="emotions" src="assets/atlas/street-3-emotions.png" alt="Real street-map frame with emotion hotspots" />
-          <img class="atlas-frame" data-frame="activities" src="assets/atlas/street-4-activities.png" alt="Real street-map frame with activity hotspots" />
-          <img class="atlas-frame" data-frame="density" src="assets/atlas/street-5-density.png" alt="Real street-map density heat frame" />
-          <img class="atlas-frame" data-frame="wellbeing" src="assets/atlas/street-6-wellbeing.png" alt="Real street-map well-being frame" />
-          <img class="atlas-frame" data-frame="governance" src="assets/atlas/street-7-governance.png" alt="Real street-map governance frame" />
+    <section id="map-story" class="live-map-scrolly">
+      <div class="live-map-sticky">
+        <div id="storyMap" class="live-map-stage" aria-label="Interactive ArcGIS map of survey points"></div>
+        <img class="map-fallback" src="assets/atlas/street-2-all-points.png" alt="Static fallback map with survey points" />
+        <div class="live-map-shade"></div>
+        <div class="live-map-header">
+          <div><span class="mini">Spatial story · live GIS</span><strong id="mapModeTitle">Exact survey coordinates</strong></div>
+          <div class="live-map-counter"><b id="mapPointCount">527</b><span>core points</span></div>
         </div>
-        <div class="atlas-shade"></div>
-        <div class="atlas-header">
-          <div><span class="mini">Spatial story</span><strong id="atlasModeTitle">Forest overview</strong></div>
-          <div class="atlas-counter"><b id="atlasCounter">527</b><span>core points</span></div>
-        </div>
+        <div class="live-map-status" id="mapStatus">Loading the ArcGIS web map…</div>
+        <div class="live-map-legend" id="mapLegend"></div>
       </div>
-      <div class="atlas-steps">
-        <article class="atlas-step active" data-frame="overview" data-title="Forest overview" data-count="527">
+      <div class="live-map-steps">
+        <article class="live-map-step active" data-map-mode="overview">
           <span class="step-no">04.1</span>
-          <h3>Begin with a real street map of the place.</h3>
-          <p>This sequence uses a real street-map snapshot of the Krafslösaskogen / Snurrom area. The survey points are plotted from their saved coordinates, with <strong>527 valid mapped experiences</strong> inside the forest-core story extent and a full-extent inset for context.</p>
+          <h3>Now the map engine receives the coordinates directly.</h3>
+          <p>No screenshot georeferencing is used here. The map loads from the ArcGIS web map you provided, and each survey pin is positioned from its saved longitude and latitude.</p>
         </article>
-        <article class="atlas-step" data-frame="all-points" data-title="All mapped experiences" data-count="527">
+        <article class="live-map-step" data-map-mode="points">
           <span class="step-no">04.2</span>
-          <h3>Then place every exact mapped point into view.</h3>
-          <p>Each point is drawn from the saved survey coordinates, marking a remembered location, route, pause, or repeated everyday encounter inside the forest narrative area.</p>
+          <h3>Every point is plotted in geographic space.</h3>
+          <p>The <strong>527 core points</strong> are drawn directly on the live map. Pan, zoom, and click any point to inspect the saved emotion, activity and respondent-level scale values.</p>
         </article>
-        <article class="atlas-step" data-frame="emotions" data-title="Emotion hotspots" data-count="527">
+        <article class="live-map-step" data-map-mode="emotion">
           <span class="step-no">04.3</span>
-          <h3>Emotion turns the map warm.</h3>
-          <p>Joy dominates the emotional geography, while calmness forms a smaller but still visible second pattern. The halo effect lets these feelings build into a continuous surface.</p>
+          <h3>Emotion becomes a categorical geography.</h3>
+          <p>Joy, calm, contentment and the remaining emotion categories are rendered from the survey attributes while the geographic positions remain unchanged.</p>
         </article>
-        <article class="atlas-step" data-frame="activities" data-title="Activity hotspots" data-count="527">
+        <article class="live-map-step" data-map-mode="activity">
           <span class="step-no">04.4</span>
-          <h3>Activities reveal everyday structure.</h3>
-          <p>Free-text descriptions were grouped into broad themes such as walking, dog walking, foraging, play, and quiet reflection. These grouped activities create a different spatial rhythm.</p>
+          <h3>Activities reveal another pattern.</h3>
+          <p>Free-text activities are grouped into broad themes such as walking, dog walking, foraging, play and quiet nature use, then rendered on the same exact coordinates.</p>
         </article>
-        <article class="atlas-step" data-frame="density" data-title="Density heat" data-count="527">
+        <article class="live-map-step" data-map-mode="heat">
           <span class="step-no">04.5</span>
-          <h3>Density shows repeated attention.</h3>
-          <p>When categories drop away, the strongest concentrations of mapped attention become visible as a layered heat field.</p>
+          <h3>Density emerges without moving the points.</h3>
+          <p>The layer switches to a true GIS heat renderer. Concentrations are calculated from the live projected point positions rather than from pixels in a screenshot.</p>
         </article>
-        <article class="atlas-step" data-frame="wellbeing" data-title="Well-being layer" data-count="527">
+        <article class="live-map-step" data-map-mode="wellbeing">
           <span class="step-no">04.6</span>
-          <h3>The same places can be linked to well-being.</h3>
-          <p>Each point inherits the respondent’s well-being score. This is descriptive rather than inferential, but it helps the map speak directly to the survey scales.</p>
+          <h3>Well-being can be read spatially.</h3>
+          <p>Each mapped point inherits the respondent’s 1–7 well-being composite. Darker green represents higher scores.</p>
         </article>
-        <article class="atlas-step" data-frame="governance" data-title="Governance recognition" data-count="527">
+        <article class="live-map-step" data-map-mode="governance">
           <span class="step-no">04.7</span>
-          <h3>Governance recognition cools the story.</h3>
-          <p>The atlas ends with the part of the questionnaire that scored lowest: whether governance recognizes the value and rights of non-human species in the forest.</p>
+          <h3>Governance recognition tells a different story.</h3>
+          <p>The same live locations are recoloured by the governance-recognition scale, making the contrast with coexistence values visible without changing the underlying geography.</p>
         </article>
       </div>
     </section>
@@ -203,10 +199,19 @@
 
     <section class="explorer-section">
       <div class="explorer-inner reveal">
-        <p class="eyebrow">08 · Atlas strip</p>
-        <h2>The whole sequence at a glance.</h2>
-        <p>This gallery repeats the real-map story frames as a reliable static set. It is ideal for hosting on Render because it does not depend on live basemap services or external mapping scripts.</p>
-        <div id="atlasGallery" class="atlas-gallery"></div>
+        <p class="eyebrow">08 · Explore the live map</p>
+        <h2>Keep the story, then take control.</h2>
+        <p>The same ArcGIS map remains interactive. Use these controls to switch layers, return to the forest extent, or inspect all valid survey coordinates — including points outside the story’s core extent.</p>
+        <div class="explorer-controls live-map-controls">
+          <button data-live-mode="points">All core points</button>
+          <button data-live-mode="emotion">Emotions</button>
+          <button data-live-mode="activity">Activities</button>
+          <button data-live-mode="heat">Density heat</button>
+          <button data-live-mode="wellbeing">Well-being</button>
+          <button data-live-mode="governance">Governance recognition</button>
+          <button id="fitCoreLiveBtn">Forest extent</button>
+          <button id="fitAllLiveBtn">All 550 valid points</button>
+        </div>
       </div>
     </section>
 
@@ -218,6 +223,7 @@
       <div class="method-grid">
         <div class="method-card reveal"><b>Respondent unit</b><p>Descriptive statistics and regression use one row per respondent. Repeated map pins are never counted as separate people.</p></div>
         <div class="method-card reveal"><b>Quality control</b><p>Two submissions with explicit “test” map text are excluded from analysis. Four substantive pins with impossible coordinates are excluded from the map, but their respondent surveys remain in respondent-level analysis.</p></div>
+        <div class="method-card reveal"><b>Map accuracy</b><p>The live map does not georeference a screenshot. Survey longitude/latitude values are passed directly to the ArcGIS map engine in WGS84 (EPSG:4326), which handles projection onto the basemap.</p></div>
         <div class="method-card reveal"><b>Scale construction</b><p>Item means form composite scores. Internal consistency is strong: bonding α <span id="alphaBond"></span>, functionality α <span id="alphaFunction"></span>, well-being α <span id="alphaWell"></span>, coexistence α <span id="alphaCoexist"></span>, governance α <span id="alphaGov"></span>.</p></div>
         <div class="method-card reveal"><b>Interpretation</b><p>The sample is self-selected, the design is cross-sectional, and many responses come from frequent local users. Results describe this sample and should not be generalized without a sampling frame.</p></div>
       </div>
@@ -225,6 +231,7 @@
       <div class="sources reveal">
         <h3>Sources</h3>
         <a href="https://kraflosaskogensurvey.onrender.com" target="_blank" rel="noopener">Original Krafslösaskogen / Snurrom survey</a>
+        <a href="https://uj.maps.arcgis.com/apps/mapviewer/index.html?webmap=b4969621fd1f423992c7ba93ef22b410" target="_blank" rel="noopener">ArcGIS web map used in the live story</a>
         <a href="https://kalmar.se/bygga-bo-och-miljo/samhallsutveckling/planering/oversiktlig-planering/planprogram/snurrom.html" target="_blank" rel="noopener">Kalmar Municipality — Plan programme for Snurrom</a>
         <a href="https://kalmar.se/bygga-bo-och-miljo/samhallsutveckling/pagaende-detaljplanearbete-och-projekt/norra-staden/friluftsstaden/friluftsliv-och-historia.html" target="_blank" rel="noopener">Kalmar Municipality — Outdoor life and history</a>
       </div>
@@ -232,11 +239,13 @@
   </main>
 
   <footer>
-    <div><b>Krafslösaskogen survey story</b><span>Static scrollytelling prototype</span></div>
+    <div><b>Krafslösaskogen survey story</b><span>Interactive GIS scrollytelling prototype</span></div>
     <div>Built from the provided survey workbook · No server-side code required.</div>
   </footer>
 
+  <script src="https://js.arcgis.com/4.33/"></script>
   <script src="data/site-data.js"></script>
+  <script src="assets/story-map.js"></script>
   <script src="assets/app.js"></script>
 </body>
 </html>
