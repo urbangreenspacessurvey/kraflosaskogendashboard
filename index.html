@@ -5,9 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="A scrollytelling exploration of the Krafslösaskogen / Snurrom survey in Kalmar, Sweden." />
   <title>Krafslösaskogen — a forest in everyday life</title>
-  <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIINfQ3yn5pY+Wg3hw6A5rH1K3h9+v+9m0A=" crossorigin="" />
-  <link rel="stylesheet" href="assets/styles.css" />
+    <link rel="stylesheet" href="assets/styles.css" />
 </head>
 <body>
   <div class="progress"><span id="progressBar"></span></div>
@@ -91,41 +89,58 @@
       </div>
     </section>
 
-    <section id="map-story" class="map-scrolly">
-      <div class="map-sticky">
-        <div id="storyMap" aria-label="Interactive map of survey points"></div>
-        <div class="map-shade"></div>
-        <div class="map-header">
-          <div><span class="mini">Spatial story</span><strong id="mapModeTitle">The full survey geography</strong></div>
-          <div class="map-counter"><b id="visiblePointCount">0</b><span>points shown</span></div>
+    <section id="map-story" class="atlas-scrolly">
+      <div class="atlas-sticky">
+        <div class="atlas-stage" aria-label="Scroll-sequenced survey atlas">
+          <img class="atlas-frame active" data-frame="overview" src="assets/atlas/frame-1-overview.svg" alt="Stylised forest overview map frame" />
+          <img class="atlas-frame" data-frame="all-points" src="assets/atlas/frame-2-all-points.svg" alt="Mapped experiences frame" />
+          <img class="atlas-frame" data-frame="emotions" src="assets/atlas/frame-3-emotions.svg" alt="Emotion hotspot frame" />
+          <img class="atlas-frame" data-frame="activities" src="assets/atlas/frame-4-activities.svg" alt="Activity hotspot frame" />
+          <img class="atlas-frame" data-frame="density" src="assets/atlas/frame-5-density.svg" alt="Density heat frame" />
+          <img class="atlas-frame" data-frame="wellbeing" src="assets/atlas/frame-6-wellbeing.svg" alt="Well-being layer frame" />
+          <img class="atlas-frame" data-frame="governance" src="assets/atlas/frame-7-governance.svg" alt="Governance recognition frame" />
         </div>
-        <div class="map-legend" id="mapLegend"></div>
+        <div class="atlas-shade"></div>
+        <div class="atlas-header">
+          <div><span class="mini">Spatial story</span><strong id="atlasModeTitle">Forest overview</strong></div>
+          <div class="atlas-counter"><b id="atlasCounter">527</b><span>core points</span></div>
+        </div>
       </div>
-      <div class="map-steps">
-        <article class="map-step active" data-mode="all">
+      <div class="atlas-steps">
+        <article class="atlas-step active" data-frame="overview" data-title="Forest overview" data-count="527">
           <span class="step-no">04.1</span>
-          <h3>Start with the full geography of the survey.</h3>
-          <p><strong id="allPinText">550</strong> valid mapped points are shown on the full map — including the small number placed outside the immediate forest area. This keeps the spatial story intact instead of cropping the view.</p>
+          <h3>Begin with a robust survey atlas, not a fragile web map.</h3>
+          <p>This sequence is intentionally static and reliable. It follows the forest core where <strong>527 valid mapped experiences</strong> were placed, while each frame also includes a small inset for the full survey extent.</p>
         </article>
-        <article class="map-step" data-mode="emotion">
+        <article class="atlas-step" data-frame="all-points" data-title="All mapped experiences" data-count="527">
           <span class="step-no">04.2</span>
-          <h3>Heat the map by emotion.</h3>
-          <p>The coloured hotspot layer shows <em>what people felt</em> at each location. Joy dominates, while calmness forms a smaller but clearly visible second pattern.</p>
+          <h3>Then place every mapped experience into view.</h3>
+          <p>Each point marks a remembered location, route, pause, or repeated everyday encounter inside the main forest narrative area.</p>
         </article>
-        <article class="map-step" data-mode="activity">
+        <article class="atlas-step" data-frame="emotions" data-title="Emotion hotspots" data-count="527">
           <span class="step-no">04.3</span>
-          <h3>Heat the map by what people do there.</h3>
-          <p>Free-text activities were grouped into broad themes such as walking, dog walking, foraging, play and quiet nature time. The layer shows how everyday use shapes the forest map.</p>
+          <h3>Emotion turns the map warm.</h3>
+          <p>Joy dominates the emotional geography, while calmness forms a smaller but still visible second pattern. The halo effect lets these feelings build into a continuous surface.</p>
         </article>
-        <article class="map-step" data-mode="heat">
+        <article class="atlas-step" data-frame="activities" data-title="Activity hotspots" data-count="527">
           <span class="step-no">04.4</span>
-          <h3>Density reveals repeated attention.</h3>
-          <p>When categories are stripped away, the heatmap shows where mapped experiences accumulate most intensely.</p>
+          <h3>Activities reveal everyday structure.</h3>
+          <p>Free-text descriptions were grouped into broad themes such as walking, dog walking, foraging, play, and quiet reflection. These grouped activities create a different spatial rhythm.</p>
         </article>
-        <article class="map-step" data-mode="wellbeing">
+        <article class="atlas-step" data-frame="density" data-title="Density heat" data-count="527">
           <span class="step-no">04.5</span>
-          <h3>The same places can be linked back to well-being.</h3>
-          <p>Mapped places are not independent observations — some people placed many points — so this layer is descriptive, not a spatial significance test. It lets the survey and map speak to the survey scales without pretending each pin is a new respondent.</p>
+          <h3>Density shows repeated attention.</h3>
+          <p>When categories drop away, the strongest concentrations of mapped attention become visible as a layered heat field.</p>
+        </article>
+        <article class="atlas-step" data-frame="wellbeing" data-title="Well-being layer" data-count="527">
+          <span class="step-no">04.6</span>
+          <h3>The same places can be linked to well-being.</h3>
+          <p>Each point inherits the respondent’s well-being score. This is descriptive rather than inferential, but it helps the map speak directly to the survey scales.</p>
+        </article>
+        <article class="atlas-step" data-frame="governance" data-title="Governance recognition" data-count="527">
+          <span class="step-no">04.7</span>
+          <h3>Governance recognition cools the story.</h3>
+          <p>The atlas ends with the part of the questionnaire that scored lowest: whether governance recognizes the value and rights of non-human species in the forest.</p>
         </article>
       </div>
     </section>
@@ -188,20 +203,10 @@
 
     <section class="explorer-section">
       <div class="explorer-inner reveal">
-        <p class="eyebrow">08 · Explore the map yourself</p>
-        <h2>Switch between full-map hotspots and survey-linked layers.</h2>
-        <p>The map above remains interactive: pan, zoom, switch basemaps, and click points for saved activity, emotion and notes. The default framing now stays focused on the forest area for readability, while the full survey extent remains one click away.</p>
-        <div class="explorer-controls">
-          <button data-explore-mode="all">Full geography</button>
-          <button data-explore-mode="emotion">Emotions</button>
-          <button data-explore-mode="activity">Activities</button>
-          <button data-explore-mode="heat">Density</button>
-          <button data-explore-mode="bond">Nature bonding</button>
-          <button data-explore-mode="wellbeing">Well-being</button>
-          <button data-explore-mode="governance">Governance recognition</button>
-          <button id="fitAllBtn">Fit full survey extent</button>
-          <button id="fitCoreBtn">Zoom to forest core</button>
-        </div>
+        <p class="eyebrow">08 · Atlas strip</p>
+        <h2>The whole sequence at a glance.</h2>
+        <p>This gallery repeats the scrollytelling atlas as a reliable set of static frames. It is ideal for hosting on Render because it does not depend on live basemap services or external mapping scripts.</p>
+        <div id="atlasGallery" class="atlas-gallery"></div>
       </div>
     </section>
 
@@ -231,8 +236,6 @@
     <div>Built from the provided survey workbook · No server-side code required.</div>
   </footer>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
   <script src="data/site-data.js"></script>
   <script src="assets/app.js"></script>
 </body>
