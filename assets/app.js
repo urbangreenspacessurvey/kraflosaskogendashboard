@@ -74,13 +74,13 @@
 
   // Atlas gallery
   const galleryItems = [
-    ['frame-1-overview.svg','Forest overview'],
-    ['frame-2-all-points.svg','All mapped experiences'],
-    ['frame-3-emotions.svg','Emotion hotspots'],
-    ['frame-4-activities.svg','Activity hotspots'],
-    ['frame-5-density.svg','Density heat'],
-    ['frame-6-wellbeing.svg','Well-being layer'],
-    ['frame-7-governance.svg','Governance recognition']
+    ['street-1-overview.png','Forest overview'],
+    ['street-2-all-points.png','All mapped experiences'],
+    ['street-3-emotions.png','Emotion hotspots'],
+    ['street-4-activities.png','Activity hotspots'],
+    ['street-5-density.png','Density heat'],
+    ['street-6-wellbeing.png','Well-being layer'],
+    ['street-7-governance.png','Governance recognition']
   ];
   $('#atlasGallery').innerHTML = galleryItems.map(([file,title],i)=>`<figure class="atlas-thumb reveal"><img src="assets/atlas/${file}" alt="${esc(title)}" loading="lazy"/><figcaption><span>${String(i+1).padStart(2,'0')}</span><b>${esc(title)}</b></figcaption></figure>`).join('');
   $$('#atlasGallery .reveal').forEach(el=>revealObs.observe(el));
