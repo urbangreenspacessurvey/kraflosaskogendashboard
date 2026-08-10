@@ -7,6 +7,13 @@
   <title>Krafslösaskogen — a forest in everyday life</title>
     <link rel="stylesheet" href="https://js.arcgis.com/4.33/esri/themes/light/main.css" />
   <link rel="stylesheet" href="assets/styles.css" />
+  <script>
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    if (!location.hash) {
+      window.scrollTo(0,0);
+      addEventListener('DOMContentLoaded', () => window.scrollTo(0,0), {once:true});
+    }
+  </script>
 </head>
 <body>
   <div class="progress"><span id="progressBar"></span></div>

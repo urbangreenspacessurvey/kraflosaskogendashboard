@@ -9,6 +9,29 @@
   const pct0 = x => `${Math.round(Number(x))}%`;
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+
+  // ---------- startup scroll handling ----------
+  // Some in-app browsers restore a previous scroll position after load.
+  // For a plain homepage URL, always start at the hero. Intentional deep links
+  // with a hash (for example #map-story) still work.
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+
+  const shouldForceTop = () => !window.location.hash;
+
+  function forceTopSoon() {
+    if (!shouldForceTop()) return;
+    window.scrollTo(0, 0);
+    requestAnimationFrame(() => window.scrollTo(0, 0));
+    setTimeout(() => { if (shouldForceTop()) window.scrollTo(0, 0); }, 120);
+    setTimeout(() => { if (shouldForceTop()) window.scrollTo(0, 0); }, 500);
+  }
+
+  window.addEventListener('pageshow', forceTopSoon);
+  window.addEventListener('load', forceTopSoon);
+  if (document.readyState === 'interactive' || document.readyState === 'complete') {
+    forceTopSoon();
+  }
+
   // ---------- scroll chrome + reveal/animation infrastructure ----------
   window.addEventListener('scroll', () => {
     const h = document.documentElement.scrollHeight - innerHeight;
