@@ -9,9 +9,10 @@
   <link rel="stylesheet" href="assets/styles.css" />
   <script>
     if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-    if (!location.hash) {
+    if (!location.hash || location.hash === '#story') {
       window.scrollTo(0,0);
       addEventListener('DOMContentLoaded', () => window.scrollTo(0,0), {once:true});
+      addEventListener('load', () => window.scrollTo(0,0), {once:true});
     }
   </script>
 </head>
@@ -30,7 +31,7 @@
   </header>
 
   <main id="top">
-    <section class="hero">
+    <section id="story" class="hero">
       <div class="hero-noise"></div>
       <div class="hero-orbit orbit-a"></div><div class="hero-orbit orbit-b"></div>
       <div class="hero-content reveal">
@@ -38,12 +39,12 @@
         <h1>A forest in<br><em>everyday life.</em></h1>
         <p class="dek">An exploration of how people use Krafslösaskogen, what they feel there, and how attachment, visitation and perceptions of more-than-human life move together.</p>
         <div class="hero-kpis" id="heroKpis"></div>
-        <a class="scroll-cue" href="#story"><span>Scroll to enter the story</span><b>↓</b></a>
+        <a class="scroll-cue" href="#setting"><span>Scroll to enter the story</span><b>↓</b></a>
       </div>
       <div class="hero-foot">Survey snapshot · <span id="snapshotDates"></span></div>
     </section>
 
-    <section id="story" class="chapter intro-grid">
+    <section id="setting" class="chapter intro-grid">
       <div class="chapter-copy reveal">
         <p class="eyebrow">01 · The setting</p>
         <h2>Nature and city are meeting in the same landscape.</h2>

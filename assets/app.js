@@ -16,7 +16,7 @@
   // with a hash (for example #map-story) still work.
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
-  const shouldForceTop = () => !window.location.hash;
+  const shouldForceTop = () => !window.location.hash || window.location.hash === '#story';
 
   function forceTopSoon() {
     if (!shouldForceTop()) return;
