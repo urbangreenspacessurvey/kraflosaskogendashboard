@@ -5,7 +5,6 @@
 
   const $ = (s) => document.querySelector(s);
   const $$ = (s) => [...document.querySelectorAll(s)];
-  const WEBMAP_ID = 'b4969621fd1f423992c7ba93ef22b410';
 
   const emotionColors = {
     Joy:'#d3ad54', Calm:'#6f9f91', Contentment:'#9aa56e', Pleasure:'#c97958', Gratitude:'#b98a60',
@@ -64,32 +63,21 @@
   }
 
   window.require([
-    'esri/WebMap',
     'esri/Map',
     'esri/Basemap',
     'esri/views/MapView',
     'esri/layers/FeatureLayer',
-    'esri/layers/WebTileLayer',
+    'esri/layers/OpenStreetMapLayer',
     'esri/Graphic',
     'esri/widgets/Home',
     'esri/widgets/Zoom'
-  ], async function(WebMap, Map, Basemap, MapView, FeatureLayer, WebTileLayer, Graphic, Home, Zoom) {
-    let map;
-    let usedFallbackBasemap = false;
-
-    try {
-      map = new WebMap({ portalItem: { id: WEBMAP_ID } });
-      await map.load();
-    } catch (err) {
-      console.warn('Could not load supplied ArcGIS web map; falling back to direct OSM tiles.', err);
-      usedFallbackBasemap = true;
-      const osmTiles = new WebTileLayer({
-        urlTemplate: 'https://tile.openstreetmap.org/{level}/{col}/{row}.png',
-        copyright: '© OpenStreetMap contributors',
-        subDomains: ['a','b','c']
-      });
-      map = new Map({ basemap: new Basemap({ baseLayers:[osmTiles], title:'OpenStreetMap' }) });
-    }
+  ], async function(Map, Basemap, MapView, FeatureLayer, OpenStreetMapLayer, Graphic, Home, Zoom) {
+    // Direct OpenStreetMap basemap: no ArcGIS portal item, account, token or sign-in flow.
+    const osmLayer = new OpenStreetMapLayer({
+      title:'OpenStreetMap',
+      copyright:'© OpenStreetMap contributors'
+    });
+    const map = new Map({ basemap: new Basemap({ baseLayers:[osmLayer], title:'OpenStreetMap' }) });
 
     const graphics = D.pins.map((p, i) => new Graphic({
       geometry: { type:'point', longitude:Number(p.lng), latitude:Number(p.lat), spatialReference:{wkid:4326} },
@@ -216,7 +204,7 @@
     if (coreExtent) await view.goTo(coreExtent.expand(1.14), {duration:850});
 
     document.querySelector('.live-map-sticky')?.classList.add('map-ready');
-    $('#mapStatus').textContent = usedFallbackBasemap ? 'Live map ready · OpenStreetMap fallback' : 'Live map ready · ArcGIS web map';
+    $('#mapStatus').textContent = 'Live map ready · OpenStreetMap';
     setTimeout(()=>$('#mapStatus')?.classList.add('quiet'), 2800);
 
     let mode = 'overview';

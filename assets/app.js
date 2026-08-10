@@ -87,7 +87,7 @@
   // ---------- quotes before the map ----------
   const quoteRoot = $('#forestQuotes');
   if (quoteRoot && Array.isArray(D.quotes)) {
-    const quoteCard = (q,i)=>`<article class="quote-card ${i===0?'quote-feature':''}"><div class="quote-meta"><span>${esc(q.emotion || 'Mapped note')}</span><span>${esc(q.activity || '')}</span></div><blockquote>${esc(q.quote)}</blockquote>${q.translation ? `<p class="quote-translation"><strong>Translation:</strong> ${esc(q.translation)}</p>` : ''}<footer>Mapped survey place · pin ${q.pin_id}</footer></article>`;
+    const quoteCard = (q,i)=>`<article class="quote-card ${i===0?'quote-feature':''}"><div class="quote-meta"><span>${esc(q.emotion || 'Mapped note')}</span><span>${esc(q.activity || '')}</span></div><blockquote>${esc(q.quote)}</blockquote>${q.translation ? `<p class="quote-translation"><strong>Translation:</strong> ${esc(q.translation)}</p>` : ''}<div class="quote-person">${q.age ? `<span>${esc(q.age)}</span>` : ''}${q.gender ? `<span>${esc(q.gender)}</span>` : ''}</div><footer>Mapped survey place · pin ${q.pin_id}</footer></article>`;
     const photoA = `<figure class="quote-photo quote-photo-tall"><img src="assets/quote-berries.webp" alt="Forest understory with red berries" loading="lazy"/><figcaption><span>Forest detail</span><b>Low plants, berries and the forest floor</b></figcaption></figure>`;
     const photoB = `<figure class="quote-photo"><img src="assets/quote-stonewall.webp" alt="Moss-covered stone wall in the forest" loading="lazy"/><figcaption><span>Forest memory</span><b>Moss-covered stones and traces of older land use</b></figcaption></figure>`;
     const cards = [];

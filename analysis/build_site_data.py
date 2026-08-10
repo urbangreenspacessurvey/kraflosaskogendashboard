@@ -51,7 +51,7 @@ def activity_group(activity=''):
     return 'Other activity'
 
 # Merge respondent-level scales onto valid pins.
-merge_cols=['global_response_id','BOND','WELL','M_ECO','M_GOV','distance_en','freq_en','age_en','ins']
+merge_cols=['global_response_id','BOND','WELL','M_ECO','M_GOV','distance_en','freq_en','age_en','gender_en','ins']
 valid_sample = m.merge(s[merge_cols],on='global_response_id',how='left')
 display = valid_sample[in_story_area(valid_sample)].copy()
 excluded_story = int(len(valid_sample) - len(display))
@@ -107,8 +107,23 @@ quotes = [
         'translation': '',
         'emotion': 'Gratitude',
         'activity': 'Rest & reflection'
+    },
+    {
+        'pin_id': 146,
+        'quote': 'Perfect place for daily exercise in nice forest.',
+        'translation': '',
+        'emotion': 'Joy',
+        'activity': 'Dog walking'
     }
 ]
+
+# Attach basic demographics from the response linked to each mapped quote.
+for q in quotes:
+    qr = display.loc[display.global_pin_id == q['pin_id']]
+    if not qr.empty:
+        row = qr.iloc[0]
+        q['age'] = row.age_en if pd.notna(row.age_en) else ''
+        q['gender'] = row.gender_en if pd.notna(row.gender_en) else ''
 
 scale={x['key']:x for x in A['scales']}
 D={
