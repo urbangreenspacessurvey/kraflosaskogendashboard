@@ -1,7 +1,7 @@
 """Krafslosaskogen survey: cleaning, harmonisation, scale construction."""
 import pandas as pd, numpy as np
 
-XLSX = '/mnt/data/kraflosaskogen_combined_survey_and_map_points(1).xlsx'
+XLSX = '/mnt/data/kraflosaskogen_combined_survey_and_map_points(2).xlsx'
 TEST_IDS = [1, 120]           # explicit "test" text in pin activity/note
 FOREST = (56.70917, 16.33447)  # median of the pin cloud
 
@@ -173,11 +173,11 @@ def load():
 
 def analysis_frames():
     sr, mp = load()
-    # Public analysis is restricted to adults (18+) as requested.
-    adult = (~sr.is_test) & (sr.age_en != 'Under 18')
-    s = sr[adult].copy()
-    adult_ids = set(s.global_response_id)
-    m = mp[mp.valid & mp.global_response_id.isin(adult_ids)].copy()
+    # Respondents under 18 are excluded from the analysis as requested.
+    eligible = (~sr.is_test) & (sr.age_en != 'Under 18')
+    s = sr[eligible].copy()
+    analysis_ids = set(s.global_response_id)
+    m = mp[mp.valid & mp.global_response_id.isin(analysis_ids)].copy()
     return s, m, sr, mp
 
 

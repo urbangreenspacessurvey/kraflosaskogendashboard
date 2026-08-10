@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="A scrollytelling exploration of the Krafslösaskogen / Snurrom survey in Kalmar, Sweden." />
+  <meta name="description" content="A data story about how respondents use, value and experience Krafslösaskogen / Snurrom in Kalmar, Sweden." />
   <title>Krafslösaskogen — a forest in everyday life</title>
     <link rel="stylesheet" href="https://js.arcgis.com/4.33/esri/themes/light/main.css" />
   <link rel="stylesheet" href="assets/styles.css" />
@@ -15,6 +15,7 @@
     <nav>
       <a href="#story">Story</a>
       <a href="#map-story">Map</a>
+      <a href="#finding">Finding</a>
       <a href="#model">Model</a>
       <a href="#method">Method</a>
     </nav>
@@ -81,18 +82,27 @@
       <div class="photo-break-copy reveal">
         <p class="eyebrow">04 · Entering the forest</p>
         <h2>Before the numbers, there is a place.</h2>
-        <p>The survey is not only about opinions. It is about a lived landscape: paths, light, undergrowth, dog walks, berry picking, calmness, routine and return. The visual story now leans into that atmosphere more clearly.</p>
+        <p>The survey is not only about opinions. It is about a lived landscape: paths, light, undergrowth, dog walks, berry picking, calmness, routine and return. Before the spatial layers appear, a few voices from the survey help set that atmosphere.</p>
       </div>
+    </section>
+
+    <section class="quote-section chapter">
+      <div class="section-head reveal">
+        <p class="eyebrow">04A · Voices from the forest</p>
+        <h2>Short remarks make the landscape legible before the map does.</h2>
+        <p>These quotations are drawn from mapped notes and activities in the survey. They bring out the forest as routine, refuge, habitat and near-city oasis before the pins and heat layers take over.</p>
+      </div>
+      <div class="quote-grid reveal" id="forestQuotes"></div>
     </section>
 
     <section id="map-story" class="live-map-scrolly">
       <div class="live-map-sticky">
         <div id="storyMap" class="live-map-stage" aria-label="Interactive ArcGIS map of survey points"></div>
-        <img class="map-fallback" src="assets/atlas/street-2-all-points.png" alt="Static fallback map with survey points" />
+        <img class="map-fallback" src="assets/atlas/osm-base.png" alt="Static open-map fallback for the Krafslösaskogen area" />
         <div class="live-map-shade"></div>
         <div class="live-map-header">
           <div><span class="mini">Spatial story · live GIS</span><strong id="mapModeTitle">Exact survey coordinates</strong></div>
-          <div class="live-map-counter"><b id="mapPointCount">527</b><span>core points</span></div>
+          <div class="live-map-counter"><b id="mapPointCount">498</b><span>story-area points</span></div>
         </div>
         <div class="live-map-status" id="mapStatus">Loading the ArcGIS web map…</div>
         <div class="live-map-legend" id="mapLegend"></div>
@@ -101,12 +111,12 @@
         <article class="live-map-step active" data-map-mode="overview">
           <span class="step-no">04.1</span>
           <h3>The forest becomes a map of lived experience.</h3>
-          <p>We begin by seeing where people placed their experiences. As the story unfolds, the same locations are viewed through different lenses — emotion, activity, density, well-being and perceptions of governance — revealing how several layers of everyday life overlap across the forest.</p>
+          <p>We begin with the mapped places retained inside the public story area: Krafslösaskogen, Snurrom and the closest surrounding neighbourhoods, including Björkenäs and Hörsö-Värsnäs. As you scroll, the same geography changes meaning: first as individual places, then as emotions, activities, concentrations of use, well-being and finally perceptions of institutional recognition.</p>
         </article>
         <article class="live-map-step" data-map-mode="points">
           <span class="step-no">04.2</span>
           <h3>Every point is plotted in geographic space.</h3>
-          <p>The <strong>527 core points</strong> are drawn directly on the live map. Pan, zoom, and click any point to inspect the saved emotion, activity and respondent-level scale values.</p>
+          <p>The <strong><span id="mapInlineCount">498</span> mapped places</strong> are drawn directly on the live map after removing clear out-of-area pins. Pan, zoom and click any point to inspect the saved emotion, activity and respondent-level scale values.</p>
         </article>
         <article class="live-map-step" data-map-mode="emotion">
           <span class="step-no">04.3</span>
@@ -136,52 +146,116 @@
       </div>
     </section>
 
-    <section class="chapter contrast-section">
+    <section class="chapter emotion-summary-section" id="emotions-summary">
       <div class="section-head reveal">
-        <p class="eyebrow">05 · The central tension</p>
-        <h2>People value coexistence much more than they trust its recognition in governance.</h2>
+        <p class="eyebrow">05 · What people felt</p>
+        <h2>Emotion is not just on the map. It has a clear overall pattern.</h2>
+        <p>Among the local mapped places that carried an emotion, positive feelings dominate. The table keeps the individual categories visible rather than collapsing everything into a single “positive” score.</p>
       </div>
-      <div class="contrast-wrap reveal">
-        <div class="contrast-scale">
-          <div class="contrast-row">
-            <div class="contrast-label"><b>Coexistence & equal value</b><span>Items 1–7</span></div>
-            <div class="contrast-track"><i id="coexistBar"></i></div><strong id="coexistMean"></strong>
-          </div>
-          <div class="contrast-row">
-            <div class="contrast-label"><b>Governance recognition</b><span>Items 8–11</span></div>
-            <div class="contrast-track"><i id="govBar"></i></div><strong id="govMean"></strong>
-          </div>
+      <div class="emotion-summary-grid reveal">
+        <div class="emotion-highlight">
+          <span class="mini">Most common emotion</span>
+          <b id="topEmotionName">Happiness / Joy</b>
+          <strong id="topEmotionShare">—</strong>
+          <p>of all local mapped places with an emotion tag.</p>
         </div>
-        <div class="contrast-copy">
-          <p>The first seven multispecies items describe coexistence, equal value, protection and accessibility. Their mean is high.</p>
-          <p>The final four ask whether city decision-making and governance recognize species and their rights. Their mean drops sharply below the scale midpoint.</p>
-          <p class="method-note">Both subscales are internally consistent in this sample (Cronbach’s α shown in the methodology).</p>
+        <div class="emotion-table-wrap">
+          <table class="analysis-table emotion-table" id="emotionTable"></table>
         </div>
       </div>
-      <div id="multiItems" class="bars bars-light reveal"></div>
     </section>
 
-    <section id="model" class="chapter model-section dark">
+    <section id="finding" class="chapter finding-section dark">
       <div class="section-head reveal">
-        <p class="eyebrow">06 · Connecting the variables</p>
-        <h2>Attachment is the strongest statistical companion of well-being.</h2>
-        <p>An exploratory respondent-level regression predicts the well-being composite from nature bonding, visit frequency, forest functionality, coexistence orientation, governance recognition, distance and age. Predictors and outcome are standardized; robust HC3 standard errors are used.</p>
+        <p class="eyebrow">06 · The finding</p>
+        <h2>One block of questions broke in two.</h2>
+        <p>Eleven statements asked about other species in Krafslösaskogen. Seven were about the forest itself — whether it shelters, supports and is open to all the life in it. Four were about decisions — whether the city’s choices recognise that life. They were written as one scale. They did not behave as one.</p>
       </div>
-      <div class="model-layout reveal">
-        <div class="model-diagram" id="modelDiagram"></div>
-        <div class="model-summary">
-          <span class="mini">Exploratory model</span>
-          <div class="r2"><b id="r2Value"></b><span>R²</span></div>
-          <p>About four-fifths of the variation in the well-being composite is associated with the included predictors in this sample.</p>
-          <p class="small">This is cross-sectional survey data. Coefficients describe association, not causal effects. Likert composites are treated as approximately continuous.</p>
+
+      <div class="finding-gap-stage reveal" id="findingGapStage">
+        <div class="gap-scale-labels" aria-hidden="true"><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div>
+        <div class="gap-columns">
+          <div class="gap-column-wrap">
+            <strong class="gap-value count-decimal" id="findingEcoMean">0.00</strong>
+            <div class="gap-column eco-column" id="findingEcoColumn"></div>
+            <div class="gap-caption"><b>The forest itself</b><span>7 items · α = <i id="findingEcoAlpha"></i></span></div>
+            <p>“People and wildlife can coexist here.” “All species living here are equally valuable.”</p>
+          </div>
+          <div class="gap-middle">
+            <b id="findingGapValue">—</b>
+            <span>points</span>
+            <small>d<sub>z</sub> = <i id="findingDz"></i></small>
+          </div>
+          <div class="gap-column-wrap">
+            <strong class="gap-value count-decimal" id="findingGovMean">0.00</strong>
+            <div class="gap-column gov-column" id="findingGovColumn"></div>
+            <div class="gap-caption"><b>The decisions</b><span>4 items · α = <i id="findingGovAlpha"></i></span></div>
+            <p>“All species are equally recognised in the city’s decision-making.” “Rights of all species are recognised in decisions about the forest’s future.”</p>
+          </div>
         </div>
       </div>
-      <div id="coefChart" class="coef-chart reveal"></div>
+
+      <div class="finding-stat-grid reveal">
+        <article class="finding-stat"><span>Respondents showing the gap</span><b id="gapPositive">—</b><p><strong id="gapBig">—</strong> differ by two full points or more.</p></article>
+        <article class="finding-stat"><span>Correlation between the two</span><b id="gapCorrelation">—</b><p>Effectively zero: believing the forest serves all species says almost nothing about believing institutions recognise them.</p></article>
+        <article class="finding-stat alert"><span>Variance explained by measured predictors</span><b id="govModelR2">—</b><p>Age, gender, education, language, distance, visit frequency, connectedness, attachment and coexistence do little to predict institutional recognition (<span id="govModelP"></span>).</p></article>
+      </div>
+
+      <div class="analysis-block reveal">
+        <div class="analysis-block-head">
+          <div><span class="mini">Factor analysis</span><h3>The two-factor structure</h3></div>
+          <p id="factorNarrative"></p>
+        </div>
+        <div class="table-scroll"><table class="analysis-table factor-table" id="factorTable"></table></div>
+      </div>
+
+      <div class="analysis-block reveal">
+        <div class="analysis-block-head">
+          <div><span class="mini">Subgroups</span><h3>And it is everywhere</h3></div>
+          <p>Split the sample by distance, visit frequency, age, education, gender or survey language and the gap survives. It is especially wide among frequent visitors and the closest neighbours.</p>
+        </div>
+        <div class="subgroup-grid" id="gapGroups"></div>
+      </div>
+    </section>
+
+    <section id="model" class="chapter model-section">
+      <div class="section-head reveal">
+        <p class="eyebrow">07 · How the pieces fit</p>
+        <h2>A chain, and something outside it.</h2>
+        <p>A path model links living close by, visiting often, feeling attached and reporting well-being. It fits the data well and accounts for most of the variance in well-being. Belief about institutional recognition sits largely outside that chain.</p>
+      </div>
+
+      <div class="sem-card reveal">
+        <div id="semDiagram" class="sem-diagram"></div>
+        <div class="fit-strip" id="semFit"></div>
+        <p class="method-note">Standardised coefficients. Green paths are positive; rust paths are negative. Dashed paths are not significant at p &lt; 0.05. The arrows show the direction the model was specified in, not demonstrated causality.</p>
+      </div>
+
+      <div class="model-detail-grid">
+        <div class="analysis-block reveal">
+          <div class="analysis-block-head"><div><span class="mini">Bootstrapped mediation</span><h3>Indirect paths</h3></div></div>
+          <p>Bootstrapped over 5,000 resamples with 95% percentile intervals. An interval clear of zero means the specified chain carries a signal.</p>
+          <div class="effect-list" id="indirectEffects"></div>
+        </div>
+        <div class="analysis-block reveal">
+          <div class="analysis-block-head"><div><span class="mini">Hierarchical regression</span><h3>Building the well-being model</h3></div></div>
+          <p>Three blocks are added in order. Who respondents are explains little. How much they visit explains a great deal. Their relationship with the place explains more still.</p>
+          <div class="hier-models" id="hierModels"></div>
+        </div>
+      </div>
+
+      <div class="analysis-block reveal correlation-block">
+        <div class="analysis-block-head">
+          <div><span class="mini">Correlation matrix</span><h3>Everything against everything</h3></div>
+          <p>Pearson correlations across <strong id="corrN">150</strong> respondents. Cells are shaded by strength; a dot marks pairs surviving false-discovery-rate correction at q &lt; 0.05. Notice the institutional-recognition row.</p>
+        </div>
+        <div class="correlation-wrap" id="correlationMatrix"></div>
+      </div>
     </section>
 
     <section class="chapter demographics-section">
       <div class="section-head reveal">
-        <p class="eyebrow">07 · Who answered?</p>
+        <p class="eyebrow">08 · Who answered?</p>
         <h2>The sample is local and frequent-use heavy.</h2>
         <p>That makes it especially useful for understanding established relationships with the forest — but it should not be read as a representative poll of all Kalmar residents.</p>
       </div>
@@ -194,34 +268,40 @@
 
     <section class="explorer-section">
       <div class="explorer-inner reveal">
-        <p class="eyebrow">08 · Explore the live map</p>
+        <p class="eyebrow">09 · Explore the live map</p>
         <h2>Keep the story, then take control.</h2>
-        <p>The same ArcGIS map remains interactive. Use these controls to switch layers, return to the forest extent, or inspect all valid survey coordinates — including points outside the story’s core extent.</p>
+        <p>The ArcGIS map remains interactive. The public map is now deliberately tightened to the immediate story area around Krafslösaskogen / Snurrom, Björkenäs and Hörsö-Värsnäs, so off-stage points near the airport, south of Berga or out in the water do not distract from the local pattern.</p>
         <div class="explorer-controls live-map-controls">
-          <button data-live-mode="points">All core points</button>
+          <button data-live-mode="points">Local points</button>
           <button data-live-mode="emotion">Emotions</button>
           <button data-live-mode="activity">Activities</button>
           <button data-live-mode="heat">Density heat</button>
           <button data-live-mode="wellbeing">Well-being</button>
-          <button data-live-mode="governance">Governance recognition</button>
-          <button id="fitCoreLiveBtn">Forest extent</button>
-          <button id="fitAllLiveBtn">All 550 valid points</button>
+          <button data-live-mode="governance">Institutional recognition</button>
+          <button id="fitCoreLiveBtn">Return to local extent</button>
         </div>
       </div>
     </section>
 
     <section id="method" class="chapter method-section">
       <div class="section-head reveal">
-        <p class="eyebrow">09 · Method & transparency</p>
-        <h2>What is included — and what is not.</h2>
+        <p class="eyebrow">10 · Reading this carefully</p>
+        <h2>What this can and cannot show.</h2>
       </div>
-      <div class="method-grid">
-        <div class="method-card reveal"><b>Respondent unit</b><p>Descriptive statistics and regression use one row per respondent. Repeated map pins are never counted as separate people.</p></div>
-        <div class="method-card reveal"><b>Map accuracy</b><p>The live map does not georeference a screenshot. Survey longitude/latitude values are passed directly to the ArcGIS map engine in WGS84 (EPSG:4326), which handles projection onto the basemap.</p></div>
-        <div class="method-card reveal"><b>Scale construction</b><p>Item means form composite scores. Internal consistency is strong: bonding α <span id="alphaBond"></span>, functionality α <span id="alphaFunction"></span>, well-being α <span id="alphaWell"></span>, coexistence α <span id="alphaCoexist"></span>, governance α <span id="alphaGov"></span>.</p></div>
-        <div class="method-card reveal"><b>Interpretation</b><p>The sample is self-selected, the design is cross-sectional, and many responses come from frequent local users. Results describe this sample and should not be generalized without a sampling frame.</p></div>
+      <div class="method-long-grid">
+        <div class="method-column reveal">
+          <article class="caution-card"><h3>The sample chose itself</h3><p id="sampleCaution"></p></article>
+          <article><h3>Cross-sectional, so no causal claims</h3><p>Everything was measured once, from the same person, in the same sitting. The path model’s arrows encode a theory, not a demonstration; the same covariances can fit rival orderings. Common-method variance may also inflate correlations among the attitude scales.</p></article>
+          <article><h3>What was cleaned</h3><p>Two responses containing explicit test text were removed. The three respondents aged under 18 are also excluded from every analysis and from the public map. Four world-wrapped longitudes were unwrapped to their equivalent longitude; one unrecoverable latitude was dropped. For the public map, a further <strong id="offsiteExcluded">47</strong> pins outside the checked story area are hidden so the spatial story stays with Krafslösaskogen, Snurrom, Björkenäs and Hörsö-Värsnäs.</p></article>
+          <article><h3>How scales were built</h3><p id="scaleMethod"></p></article>
+        </div>
+        <div class="method-column reveal">
+          <article><h3>The gap needs a follow-up, not a conclusion</h3><p>Low institutional-recognition scores are consistent with several explanations: judgement about this specific planning process, more general trust in municipal decision-making, the timing of a live dispute, or unfamiliarity with what institutions assessed. This survey cannot separate them. What it does show is that the forest–institution gap is broad across the measured subgroups and only weakly related to the respondent characteristics available here.</p></article>
+          <article><h3>Timing</h3><p>Responses were collected between 22 April and 6 July 2026. The dataset is therefore a snapshot of one period, not a longitudinal measure of how views changed over time.</p></article>
+          <article><h3>Statistics</h3><p>Regression standard errors are heteroskedasticity-consistent (HC3). Correlation p-values are corrected for multiple comparisons using Benjamini–Hochberg. Indirect effects use 5,000 bootstrap resamples with percentile intervals. The path model is estimated on standardised observed composites, so its fit indices describe the structural relations among scales.</p></article>
+          <article><h3>Reproducing it</h3><p>All analytical values in the advanced sections are generated from the supplied analysis pipeline and rebuilt after excluding respondents under 18. The original questionnaire remains available through the link below.</p></article>
+        </div>
       </div>
-      <details class="data-notes reveal"><summary>Technical model details</summary><p>The model is OLS with heteroscedasticity-consistent HC3 standard errors. Outcome: standardized mean of routine_1–routine_9. Predictors: standardized nature-bonding mean, harmonized ordinal visit frequency, functionality mean, multispecies coexistence mean (multi_1–multi_7), governance-recognition mean (multi_8–multi_11), residential-distance ordinal code, and age-band ordinal code. N = <span id="modelN"></span>.</p></details>
       <div class="sources reveal">
         <h3>Sources</h3>
         <a href="https://kraflosaskogensurvey.onrender.com" target="_blank" rel="noopener">Original Krafslösaskogen / Snurrom survey</a>
@@ -237,6 +317,7 @@
 
   <script src="https://js.arcgis.com/4.33/"></script>
   <script src="data/site-data.js"></script>
+  <script src="data/analysis-data.js"></script>
   <script src="assets/story-map.js"></script>
   <script src="assets/app.js"></script>
 </body>
