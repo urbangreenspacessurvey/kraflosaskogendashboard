@@ -184,6 +184,7 @@
       container:'storyMap',
       popup:{dockEnabled:true,dockOptions:{buttonEnabled:false,position:'bottom-right'}},
       constraints:{snapToZoom:false,rotationEnabled:false},
+      navigation:{mouseWheelZoomEnabled:false},
       ui:{components:['attribution']},
       highlightOptions:{color:'#cfad62',haloOpacity:0.85,fillOpacity:0.12}
     });
